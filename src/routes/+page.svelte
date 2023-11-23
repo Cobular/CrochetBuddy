@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DebounceStore } from "$lib/debounce";
+	import { SwipeHandler } from "$lib/swipeHandler";
 	import { parseCrochetPattern, type CrochetPattern, rowLength } from "$lib/types";
 
   let text = new DebounceStore("", 500);
@@ -9,6 +10,25 @@
   let parsed: CrochetPattern | null = null;
 
   let progress = 0;
+
+  const swipeHandler = new SwipeHandler();
+  
+  swipeHandler.registerSwipeLeft = () => {
+    if (progress > 0)
+      progress -= 1;
+  };
+
+  swipeHandler.registerSwipeRight = () => {
+    if (parsed === null) return;
+    if (progress < parsed.total_stitches)
+      progress += 1;
+  };
+
+  swipeHandler.registerPress = () => {
+    if (parsed === null) return;
+    if (progress < parsed.total_stitches)
+      progress += 1;
+  };
 
   $: try {
     if ($text === "") {
@@ -48,7 +68,7 @@
   }
 </script>
 
-<svelte:document on:keydown={processKeyDown} />
+<svelte:document on:keydown={processKeyDown} on:touchstart={swipeHandler.onTouchStart} on:touchend={swipeHandler.onTouchEnd} />
 
 <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
 	<h1 class="text-4xl font-bold text-center text-blue-500 mb-5">Crochet Buddy</h1>
