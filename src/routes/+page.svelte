@@ -31,10 +31,12 @@
     if (parsed === null) return;
     switch (event.key) {
       case " ":
+      case "x":
       case "ArrowRight":
         if (progress < parsed.total_stitches)
           progress += 1;
         break;
+      case "Backspace":
       case "ArrowLeft":
         if (progress > 0)
           progress -= 1;
@@ -65,7 +67,7 @@
 		<div><kbd class="kbd kbd-sm">r</kbd> to reset</div>
 	</div>
 	{#if parsed !== null}
-		<div class="mt-5 bg-gray-200 p-4 rounded-lg shadow-md flex flex-col items-center justify-center">
+		<div class="mt-5 bg-gray-200 p-5 rounded-lg shadow-md flex flex-col items-center justify-center">
       <div>
         Overall progress: {progress} / {parsed.total_stitches}
       </div>
@@ -81,8 +83,8 @@
                 style="grid-area: span 1 / span {stitch.num_stitches};"
               >
                 {#each [...Array(stitch.num_stitches).keys()] as k}
-                  <span class="font-mono"
-                    >{i * parsed.rows.length + j + k < progress ? "x" : "_"}</span
+                  <span class="font-mono text-2xl"
+                    >{i * rowLength(parsed.rows[0]) + j + k < progress ? "x" : "_"}</span
                   >
                 {/each}
               </div>
