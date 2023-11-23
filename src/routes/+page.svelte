@@ -13,22 +13,25 @@
 
   const swipeHandler = new SwipeHandler();
   
-  swipeHandler.registerSwipeLeft = () => {
+  swipeHandler.registerSwipeLeft(() => {
+    console.log("swipe left");
     if (progress > 0)
       progress -= 1;
-  };
+  });
 
-  swipeHandler.registerSwipeRight = () => {
+  swipeHandler.registerSwipeRight(() => {
+    console.log("swipe right");
     if (parsed === null) return;
     if (progress < parsed.total_stitches)
       progress += 1;
-  };
+  });
 
-  swipeHandler.registerPress = () => {
+  swipeHandler.registerPress(() => {
+    console.log("press");
     if (parsed === null) return;
     if (progress < parsed.total_stitches)
       progress += 1;
-  };
+  });
 
   $: try {
     if ($text === "") {
@@ -68,7 +71,7 @@
   }
 </script>
 
-<svelte:document on:keydown={processKeyDown} on:touchstart={swipeHandler.onTouchStart} on:touchend={swipeHandler.onTouchEnd} />
+<svelte:document on:keydown={processKeyDown} on:touchstart={(e) => swipeHandler.onTouchStart(e)} on:touchend={(e) => swipeHandler.onTouchEnd(e)} />
 
 <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
 	<h1 class="text-4xl font-bold text-center text-blue-500 mb-5">Crochet Buddy</h1>

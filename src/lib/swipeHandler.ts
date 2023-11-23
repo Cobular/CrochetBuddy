@@ -9,10 +9,10 @@ export class SwipeHandler {
   private swipeDownHandlers: (() => void)[] = [];
   private pressHandlers: (() => void)[] = [];
 
-  constructor(threshold: number = 150) {
+  constructor(threshold?: number) {
     this.startX = 0;
     this.startY = 0;
-    this.threshold = threshold;
+    this.threshold = threshold ?? 100;
   }
 
   registerSwipeLeft(onSwipeLeft: () => void) {
@@ -36,6 +36,8 @@ export class SwipeHandler {
   }
 
   onTouchStart(event: TouchEvent) {
+    console.log('touch start');
+    
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   }
@@ -47,17 +49,23 @@ export class SwipeHandler {
     const diffX = endX - this.startX;
     const diffY = endY - this.startY;
 
+    console.log('touch end', diffX, diffY, this.threshold);
+
     if (Math.abs(diffX) < this.threshold && Math.abs(diffY) < this.threshold) {
+      console.log('press');
+      
       this.pressHandlers.forEach(handler => handler());
       return;
     } else if (Math.abs(diffX) > Math.abs(diffY)) {
       // Horizontal swipe
       if (diffX > 0) {
+        console.log('swipe right');
         this.swipeRightHandlers.forEach(handler => handler());
       } else {
+        console.log('swipe left');
         this.swipeLeftHandlers.forEach(handler => handler());
       }
-    } else {
+    } else {      
       // Vertical swipe
       if (diffY > 0) {
         this.swipeDownHandlers.forEach(handler => handler());
