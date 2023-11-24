@@ -95,11 +95,16 @@
 		<div class="text-red-500">{error}</div>
 	{/if}
 
-	<div class="flex items-center flex-col gap-2">
+	<div class="flex items-start flex-col gap-2">
 		<div>
-			<kbd class="kbd kbd-sm">␣</kbd> to go next, <kbd class="kbd kbd-sm">←</kbd> to go back
+			<kbd class="kbd kbd-sm">␣</kbd> (or swipe right) to go next
 		</div>
-		<div><kbd class="kbd kbd-sm">r</kbd> to reset</div>
+		<div>
+			<kbd class="kbd kbd-sm">←</kbd> (or swipe left) to go back
+		</div>
+		<div>
+      <kbd class="kbd kbd-sm">r</kbd> to reset
+    </div>
 	</div>
 	{#if parsed !== null}
 		<div
@@ -132,3 +137,10 @@
 		</div>
 	{/if}
 </div>
+
+
+<style>
+  :global(body) {
+    overscroll-behavior: none;
+  }
+</style>
